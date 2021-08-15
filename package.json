@@ -1,0 +1,43 @@
+{
+  "name": "js-schedulify",
+  "version": "0.0.1",
+  "description": "Scheduler based on Promises for JavaScript",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "node_modules/.bin/webpack --config webpack.config.js",
+    "lint": "eslint .",
+    "test": "npm run build && jest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.0.1",
+    "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.1",
+    "jest": "^26.0.1",
+    "webpack": "^4.43.0",
+    "webpack-bundle-analyzer": "^3.8.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Attrash-Islam/schedulify.git"
+  },
+  "keywords": [
+    "schedule",
+    "priority",
+    "queue",
+    "scheduler"
+  ],
+  "author": "Islam Attrash <isattrash@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Attrash-Islam/schedulify/issues"
+  },
+  "homepage": "https://github.com/Attrash-Islam/schedulify#readme"
+}
