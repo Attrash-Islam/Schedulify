@@ -9,13 +9,15 @@ describe('Schedulify', () => {
     });
 
     describe('when scheduling without level', () => {
-        beforeEach(() => {
-            schedule(() => commands.push(1));
-            schedule(() => commands.push(2));
-            schedule(() => commands.push(3));
+        beforeEach((done) => {
+            Promise.all([
+                schedule(() => commands.push(1)),
+                schedule(() => commands.push(2)),
+                schedule(() => commands.push(3)),
+            ]).then(() => done());
         });
 
-        it('should append the command one after another', () => {
+        it('should schedule them in MEDIUM priority', () => {
             expect(commands).toEqual([1, 2, 3]);
         });
     });

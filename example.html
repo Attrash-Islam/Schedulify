@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function doTimersWork() {
+            JsSchedulify.default(() => expensiveWork(1), JsSchedulify.PRIORITIES.VERY_LOW),
+                JsSchedulify.default(() => {
+                    expensiveWork(2);
+                    JsSchedulify.default(() => expensiveWork(4), JsSchedulify.PRIORITIES.LOW);
+                }, JsSchedulify.PRIORITIES.LOW),
+            JsSchedulify.default(() => expensiveWork(3), JsSchedulify.PRIORITIES.MEDIUM);
+        }
+
+        function doPromisesWork() {
+            JsSchedulify.dangerouslyBasedOnPromises(() => expensiveWork(1), JsSchedulify.PRIORITIES.VERY_LOW),
+                JsSchedulify.dangerouslyBasedOnPromises(() => {
+                    expensiveWork(2);
+                    JsSchedulify.dangerouslyBasedOnPromises(() => expensiveWork(4), JsSchedulify.PRIORITIES.LOW);
+                }, JsSchedulify.PRIORITIES.LOW),
+            JsSchedulify.dangerouslyBasedOnPromises(() => expensiveWork(3), JsSchedulify.PRIORITIES.MEDIUM);
+        }
+
+        function expensiveWork(taskId) {
+            console.log(`started with task {${taskId}}`);
+
+            for (var i = 0; i < 10000; i++) {
+                var d = document.createElement('div');
+                d.textContent = `block for task ${taskId}`;
+                document.body.appendChild(d);
+            }
+        }
+    </script>
+    <button onclick="doTimersWork()">
+        Do Some Scheduling work based on timers
+    </button>
+    <button onclick="doPromisesWork()">
+        Do Some Scheduling work based on promises (Not performant)
+    </button>
+    <script src="dist/index.js"></script>
+</body>
+</html>

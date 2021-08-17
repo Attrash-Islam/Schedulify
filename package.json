@@ -1,9 +1,10 @@
 {
   "name": "js-schedulify",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Scheduler based on Promises for JavaScript",
   "main": "dist/index.js",
   "scripts": {
+    "start": "start-storybook",
     "build": "node_modules/.bin/webpack --config webpack.config.js",
     "lint": "eslint .",
     "test": "npm run build && jest"

@@ -1,27 +1,48 @@
 import PRIORITIES from './priorities';
+import dangerouslyBasedOnPromises from './dangerouslyBasedOnPromises';
 
 const tasksPriorities = [];
 
-const schedule = (task, level = PRIORITIES.HIGH, resolveRef) => {
+const inBrowser = (
+    typeof window !== 'undefined' &&
+    typeof document !== 'undefined' &&
+    !!window.addEventListener
+);
+
+const schedule = (task, level = PRIORITIES.MEDIUM, resolveRef) => new Promise((resolve) => {
+    const originalResolve = resolveRef || resolve;
+
     if (level === PRIORITIES.HIGH) {
-        return task();
+        resolve(task());
+        return;
     }
 
     if (!resolveRef) {
         tasksPriorities.push(level);
     }
 
-    return Promise.resolve().then(() => new Promise((resolve) => {
-        const originalResolve = resolveRef || resolve;
+    const runTask = () => {
+        const index = tasksPriorities.findIndex((l) => level === l);
+        tasksPriorities[index] = 10;
+        originalResolve(task());
+    };
 
+    setTimeout(() => {
         if (tasksPriorities.some((task) => task < level)) {
             schedule(task, level, originalResolve);
         } else {
-            const index = tasksPriorities.findIndex((l) => level === l);
-            tasksPriorities[index] = 10;
-            originalResolve(task());
+            if (inBrowser && level === PRIORITIES.VERY_LOW) {
+                if (document.readyState === 'complete') {
+                    runTask();
+                } else {
+                    schedule(task, level, originalResolve);
+                }
+            } else {
+                runTask();
+            }
         }
-    }));
-};
+    });
+});
 
+export { PRIORITIES, dangerouslyBasedOnPromises };
 export default schedule;
