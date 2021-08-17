@@ -1,7 +1,7 @@
 {
   "name": "js-schedulify",
   "version": "1.0.2",
-  "description": "Scheduler based on Promises for JavaScript",
+  "description": "Scheduler for JavaScript",
   "main": "dist/index.js",
   "scripts": {
     "start": "start-storybook",
