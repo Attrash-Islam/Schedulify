@@ -3,12 +3,6 @@ import dangerouslyBasedOnPromises from './dangerouslyBasedOnPromises';
 
 const tasksPriorities = [];
 
-const inBrowser = (
-    typeof window !== 'undefined' &&
-    typeof document !== 'undefined' &&
-    !!window.addEventListener
-);
-
 const schedule = (task, level = PRIORITIES.MEDIUM, resolveRef) => new Promise((resolve) => {
     const originalResolve = resolveRef || resolve;
 
@@ -31,15 +25,7 @@ const schedule = (task, level = PRIORITIES.MEDIUM, resolveRef) => new Promise((r
         if (tasksPriorities.some((task) => task < level)) {
             schedule(task, level, originalResolve);
         } else {
-            if (inBrowser && level === PRIORITIES.VERY_LOW) {
-                if (document.readyState === 'complete') {
-                    runTask();
-                } else {
-                    schedule(task, level, originalResolve);
-                }
-            } else {
-                runTask();
-            }
+            runTask();
         }
     });
 });
